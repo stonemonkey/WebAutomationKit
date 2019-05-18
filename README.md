@@ -27,7 +27,7 @@ Check WebAutomationKit.Tests project for running code.
 		Arguments = new [] { "--private" },
 		DriverLocation = Utils.GetExecutigAssemblyPath(),
 		ScreenshotsFolder = Utils.GetExecutigAssemblyPath(),
-    };
+	};
 	
 	var driver = config.CreateDriver();
 	
