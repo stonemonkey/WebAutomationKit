@@ -1,0 +1,7 @@
+﻿{
+  "driver": {
+    "name": "chrome",
+    "commandTimeoutMin": 3,
+    "arguments": [ "--incognito", "--dns-prefetch-disable" ]
+  }
+}

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAutomationKit", "WebAutomationKit\WebAutomationKit.csproj", "{35909762-2BC8-4CC6-ACAF-0EDCA780F842}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAutomationKit.Tests", "WebAutomationKit.Tests\WebAutomationKit.Tests.csproj", "{4DE43456-8073-4277-8D90-475A98314503}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35909762-2BC8-4CC6-ACAF-0EDCA780F842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35909762-2BC8-4CC6-ACAF-0EDCA780F842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35909762-2BC8-4CC6-ACAF-0EDCA780F842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35909762-2BC8-4CC6-ACAF-0EDCA780F842}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DE43456-8073-4277-8D90-475A98314503}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DE43456-8073-4277-8D90-475A98314503}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DE43456-8073-4277-8D90-475A98314503}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DE43456-8073-4277-8D90-475A98314503}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7E69DB6F-0B90-4DFA-B826-C1FCDC6C5029}
+	EndGlobalSection
+EndGlobal

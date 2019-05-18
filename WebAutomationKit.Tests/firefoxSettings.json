@@ -1,0 +1,7 @@
+﻿{
+  "driver": {
+    "name": "firefox",
+    "commandTimeoutMin": 3,
+    "arguments": [ "--private" ]
+  }
+}
