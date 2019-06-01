@@ -6,6 +6,7 @@
     <Description>Lightweight library for fluent Web UI automations with Selenium. Contains a collection of extension methods on top of Selenium types.</Description>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Copyright>Copyright © 2019</Copyright>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

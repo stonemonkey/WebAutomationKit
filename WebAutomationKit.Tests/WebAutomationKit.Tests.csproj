@@ -7,6 +7,7 @@
     <Description>Test project for WebAutomationKit.</Description>
     <Company>Costin Morariu</Company>
     <Copyright>Copyright © 2019</Copyright>
+    <Version>1.0.1</Version>
   </PropertyGroup>
   
   <ItemGroup>
