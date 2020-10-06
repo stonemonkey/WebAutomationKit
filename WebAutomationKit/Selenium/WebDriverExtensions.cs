@@ -14,6 +14,18 @@ namespace WebAutomationKit.Selenium
             return driver;
         }
 
+        public static object ClickElementById(this IWebDriver driver, string id) =>
+            driver.ExecuteScript($"document.getElementById('{id}').click();");
+
+        public static object ClickElementByXPath(this IWebDriver driver, string xPath) =>
+            driver.ExecuteScript($"document.evaluate(\"{xPath}\", document, null, 9).singleNodeValue.click();");
+
+        public static object ScrollToElementById(this IWebDriver driver, string id) =>
+            driver.ExecuteScript($"document.getElementById('{id}').scrollIntoView(false);");
+
+        public static object ScrollToElementByXPath(this IWebDriver driver, string xPath) =>
+            driver.ExecuteScript($"document.evaluate(\"{xPath}\", document, null, 9).singleNodeValue.scrollIntoView(false);");
+
         public static object ExecuteScript(this IWebDriver driver, string js, params object[] args) =>
             ((IJavaScriptExecutor) driver.ValidateNotNull(nameof(driver))).ExecuteScript(js.ValidateNotNullOrWhitespace(nameof(js)), args);
     }
