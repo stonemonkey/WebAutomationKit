@@ -1,10 +1,14 @@
-﻿$NuGetExe = Join-Path $PSScriptRoot '.nuget\nuget.exe'
+﻿$targetNugetDir = Join-Path $PSScriptRoot '.nuget'
+$targetNugetExe = Join-Path $targetNugetDir 'nuget.exe'
+$sourceNugetExe = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
 
 # download NuGet.exe if missing
-if (-not (Test-Path $NuGetExe)) {
+if (-not (Test-Path $targetNugetExe)) {
+	New-Item -ItemType Directory -Force -Path $targetNugetDir
     Write-Host 'Downloading nuget.exe ...'
-	$client = New-Object System.Net.WebClient
-	$client.DownloadFile('https://dist.nuget.org/win-x86-commandline/v3.3.0/nuget.exe', $NuGetExe)
+	# $client = New-Object System.Net.WebClient
+	# $client.DownloadFile($sourceNugetExe, $targetNugetExe)
+	Invoke-WebRequest $sourceNugetExe -OutFile $targetNugetExe
 }
 
-& $NuGetExe pack WebAutomationKit.nuspec
+& $targetNugetExe pack WebAutomationKit.nuspec
