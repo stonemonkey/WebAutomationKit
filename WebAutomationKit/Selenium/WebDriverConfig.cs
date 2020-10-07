@@ -5,9 +5,19 @@ namespace WebAutomationKit.Selenium
     public class WebDriverConfig
     {
         /// <summary>
-        /// The name of the driver (case insensitive) e.g. Chrome, Firefox or Remote.
+        /// The name of the driver (case insensitive) e.g. Chrome, Firefox.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// The platform name e.g. WIN10, Linux.
+        /// </summary>
+        public string PlatformName { get; set; }
+
+        /// <summary>
+        /// The version of the browser e.g. 85 for Chrome, 27 for Firefox.
+        /// </summary>
+        public string BrowserVersion { get; set; }
 
         /// <summary>
         /// Full path to the folder containing driver executable or the URL containing the address of the WebDriver remote server. 
@@ -43,6 +53,6 @@ namespace WebAutomationKit.Selenium
         /// </summary>
         public string[] Arguments { get; set; }
 
-        public Dictionary<string, string> Capabilities { get; set; }
+        public Dictionary<string, string> AdditionalCapabilities { get; set; }
     }
 }

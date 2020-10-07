@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>WebAutomationKit</id>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <title>WebAutomationKit</title>
     <authors>Costin Morariu</authors>
     <owners>Costin Morariu</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Lightweight library for fluent Web UI automations with Selenium. Contains a collection of extension methods on top of Selenium types.</description>
-    <releaseNotes>Adds driver Click and Scroll extension for first element by class name</releaseNotes>
+    <releaseNotes>Fixes running remote in a grid</releaseNotes>
     <copyright>Copyright © 2019</copyright>
 	  <projectUrl>https://github.com/stonemonkey/WebAutomationKit</projectUrl>
 	  <licenseUrl>https://github.com/stonemonkey/WebAutomationKit/blob/master/LICENSE</licenseUrl>
@@ -18,7 +18,7 @@
     </contentFiles>
   </metadata>
   <files>
-    <file src="**/*.cs" exclude="obj/**;bin/**" target="content/WebAutomationKit.1.0.3" />
-    <file src="**/*.cs" exclude="obj/**;bin/**" target="contentFiles/any/any/WebAutomationKit.1.0.3" />
+    <file src="**/*.cs" exclude="obj/**;bin/**" target="content/WebAutomationKit.1.0.4" />
+    <file src="**/*.cs" exclude="obj/**;bin/**" target="contentFiles/any/any/WebAutomationKit.1.0.4" />
   </files>
 </package>

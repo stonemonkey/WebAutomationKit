@@ -50,7 +50,7 @@ namespace WebAutomationKit.Tests
         [TearDown]
         public void KillAllrunningDriverProcesses()
         {
-            WebDriverConfigExtensions.KillAllRunningDriverProcesses();
+            WebDriverConfigExtensions.KillAllLocalRunningDriverProcesses();
         }
 
         [Test, TestCaseSource("Configurations")]

@@ -19,16 +19,15 @@ namespace WebAutomationKit.Selenium
         public static IWebDriver CreateDriver(this WebDriverConfig config)
         {
             var name = config?.Name ?? "null";
-            switch(name.ToLower())
+            switch (name.ToLower())
             {
                 case "chrome": return config.CreateChromeDriver();
                 case "firefox": return config.CreateFirefoxDriver();
-                case "remote": return config.CreateRemoteDriver();
             }
 
             throw new ArgumentException(
                 $"Invalid driver name '{config.Name}'! " +
-                $"Supported drivers are: Chrome, FireFox and Remote.");
+                $"Supported drivers are: Chrome and FireFox.");
         }
 
         public static IWebDriver CreateChromeDriver(this WebDriverConfig config)
@@ -36,36 +35,20 @@ namespace WebAutomationKit.Selenium
             config.ValidateNotNull(nameof(config));
             config.ValidateDriverName("Chrome");
 
-            var path = GetDriverPath(config);
             var options = new ChromeOptions();
-            if(config.Arguments.IsNotNullOrEmpty())
+            options.PlatformName = config.PlatformName;
+            options.BrowserVersion = config.BrowserVersion;
+            options.AddAdditionalCapabilies(config);
+            if (config.Arguments.IsNotNullOrEmpty())
             {
                 options.AddArguments(config.Arguments);
             }
-            if (config.Capabilities != null)
-            {
-                foreach (var capability in config.Capabilities)
-                {
-                    options.AddAdditionalCapability(capability.Key, capability.Value);
-                }
-            }
             var commandTimeout = GetCommandTimeout(config);
 
-            return new ChromeDriver(path, options, commandTimeout)
-                .ApplyCommon(config);
-        }
-
-        public static IWebDriver LogConfig(this IWebDriver driver)
-        {
-            Console.WriteLine("=================================================================================");
-            Console.WriteLine(driver.GetName() + " - configuration");
-            Console.WriteLine();
-            Console.WriteLine("PageLoadTimeoutMs: " + driver.GetPageLoadTimeoutMs());
-            Console.WriteLine("ElementWaitTimeoutMs: " + driver.GetElementWaitTimeoutMs());
-            Console.WriteLine("ImplicitElementWaitTimeoutMs: " + driver.GetImplicitElementWaitTimeoutMs());
-            Console.WriteLine("=================================================================================");
-
-            return driver;
+            return (config.IsLocal()
+                ? new ChromeDriver(GetDriverPath(config), options, commandTimeout)
+                : new RemoteWebDriver(GetRemoteHubUri(config), options.ToCapabilities(), commandTimeout))
+            .ApplyCommon(config);
         }
 
         public static IWebDriver CreateFirefoxDriver(this WebDriverConfig config)
@@ -73,54 +56,23 @@ namespace WebAutomationKit.Selenium
             config.ValidateNotNull(nameof(config));
             config.ValidateDriverName("Firefox");
 
-            var path = GetDriverPath(config);
             var options = new FirefoxOptions();
+            options.PlatformName = config.PlatformName;
+            options.BrowserVersion = config.BrowserVersion;
+            options.AddAdditionalCapabilies(config);
             if (config.Arguments.IsNotNullOrEmpty())
             {
                 options.AddArguments(config.Arguments);
             }
-            if (config.Capabilities != null)
-            {
-                foreach (var capability in config.Capabilities)
-                {
-                    options.AddAdditionalCapability(capability.Key, capability.Value);
-                }
-            }
             var commandTimeout = GetCommandTimeout(config);
 
-            return new FirefoxDriver(path, options, commandTimeout)
+            return (config.IsLocal()
+                    ? new FirefoxDriver(GetDriverPath(config), options, commandTimeout)
+                    : new RemoteWebDriver(GetRemoteHubUri(config), options.ToCapabilities(), commandTimeout))
                 .ApplyCommon(config);
         }
 
-        public static IWebDriver CreateRemoteDriver(this WebDriverConfig config)
-        {
-            config.ValidateNotNull(nameof(config));
-            config.ValidateDriverName("Remote");
-
-            Uri driverUri;
-            if (config.DriverLocation == null)
-            {
-                driverUri = new Uri("http://127.0.0.1:4444/wd/hub/");
-            }
-            else
-            {
-                driverUri = new Uri(config.DriverLocation);
-            }
-            var capabilities = new RemoteSessionSettings();
-            if (config.Capabilities != null)
-            {
-                foreach (var capability in config.Capabilities)
-                {
-                    capabilities.AddMetadataSetting(capability.Key, capability.Value);
-                }
-            }
-            var commandTimeout = GetCommandTimeout(config);
-
-            return new RemoteWebDriver(driverUri, capabilities, commandTimeout)
-                .ApplyCommon(config);
-        }
-
-        public static void KillAllRunningDriverProcesses()
+        public static void KillAllLocalRunningDriverProcesses()
         {
             var driverProcessNames = new[] { "chromedriver", "geckodriver" };
             foreach (var name in driverProcessNames)
@@ -134,6 +86,19 @@ namespace WebAutomationKit.Selenium
                     }
                 }
             }
+        }
+
+        public static IWebDriver LogConfig(this IWebDriver driver)
+        {
+            Console.WriteLine("=================================================================================");
+            Console.WriteLine(driver.GetName() + " - configuration");
+            Console.WriteLine();
+            Console.WriteLine("PageLoadTimeoutMs: " + driver.GetPageLoadTimeoutMs());
+            Console.WriteLine("ElementWaitTimeoutMs: " + driver.GetElementWaitTimeoutMs());
+            Console.WriteLine("ImplicitElementWaitTimeoutMs: " + driver.GetImplicitElementWaitTimeoutMs());
+            Console.WriteLine("=================================================================================");
+
+            return driver;
         }
 
         private static IWebDriver ApplyCommon(this IWebDriver driver, WebDriverConfig config)
@@ -203,6 +168,20 @@ namespace WebAutomationKit.Selenium
             return driver;
         }
 
+        private static void AddAdditionalCapabilies(this DriverOptions options, WebDriverConfig config)
+        {
+            if (config.AdditionalCapabilities != null)
+            {
+                foreach (var capability in config.AdditionalCapabilities)
+                {
+                    options.AddAdditionalCapability(capability.Key, capability.Value);
+                }
+            }
+        }
+
+        private static bool IsLocal(this WebDriverConfig config) =>
+            !string.IsNullOrWhiteSpace(config.DriverLocation) && !config.DriverLocation.StartsWith("http", StringComparison.OrdinalIgnoreCase);
+
         private static string GetDriverPath(this WebDriverConfig config)
         {
             var folder = config.DriverLocation;
@@ -215,6 +194,18 @@ namespace WebAutomationKit.Selenium
                 folder = Path.Combine(Utils.GetExecutigAssemblyPath(), folder);
             }
             return folder;
+        }
+
+        private static Uri GetRemoteHubUri(this WebDriverConfig config)
+        {
+            if (config.DriverLocation == null)
+            {
+                return new Uri("http://127.0.0.1:4444/wd/hub/");
+            }
+            else
+            {
+                return new Uri(config.DriverLocation);
+            }
         }
 
         private static TimeSpan GetCommandTimeout(this WebDriverConfig config)
