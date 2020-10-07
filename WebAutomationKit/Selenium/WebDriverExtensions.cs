@@ -26,6 +26,9 @@ namespace WebAutomationKit.Selenium
         public static object ScrollToElementById(this IWebDriver driver, string id) =>
             driver.ExecuteScript($"document.getElementById('{id}').scrollIntoView(false);");
 
+        public static object ScrollToFirstElementByClassName(this IWebDriver driver, string className) =>
+            driver.ExecuteScript($"document.getElementsByClassName('{className}')[0].scrollIntoView(false);");
+
         public static object ScrollToElementByXPath(this IWebDriver driver, string xPath) =>
             driver.ExecuteScript($"document.evaluate(\"{xPath}\", document, null, 9).singleNodeValue.scrollIntoView(false);");
 
