@@ -16,6 +16,9 @@ namespace WebAutomationKit.Selenium
 
         public static object ClickElementById(this IWebDriver driver, string id) =>
             driver.ExecuteScript($"document.getElementById('{id}').click();");
+            
+        public static object ClickFirstElementByClassName(this IWebDriver driver, string className) =>
+            driver.ExecuteScript($"document.getElementsByClassName('{className}')[0].click();");
 
         public static object ClickElementByXPath(this IWebDriver driver, string xPath) =>
             driver.ExecuteScript($"document.evaluate(\"{xPath}\", document, null, 9).singleNodeValue.click();");
