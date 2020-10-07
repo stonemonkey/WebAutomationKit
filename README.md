@@ -6,7 +6,7 @@ __In order to use it, install WebAutomationKit NuGet package together with:__
 1.   DotNetSeleniumExtras.WaitHelpers (tested with 3.11.0)
 2.   Selenium.Support (tested with 3.141.0)
 3.   Selenium.WebDriver (tested with 3.141.0)
-4.   One or multiple browser drivers (tested with Selenium.Chrome.WebDriver 74.0.0 and Selenium.Firefox.WebDriver 0.24.0) 
+4.   One or multiple browser drivers (tested with Selenium.Chrome.WebDriver 85.0.0 and Selenium.Firefox.WebDriver 0.27.0) 
 
 WebAutomationKit NuGet package instalation will add a project folder (WebAutomatioKit.x.y.z) containing source files. The package doesn't contain/add assemblies to the project.
 
