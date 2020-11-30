@@ -1,28 +1,39 @@
 ﻿using OpenQA.Selenium;
+using Polly;
+using System;
+using System.Linq;
 
 namespace WebAutomationKit.Selenium
 {
     public static class ByExtensions
     {
-        public static By ToIdBy(this string id)
+        /// <summary>
+        /// Waits to become available, scrolls into view, then retries to wait to become available and click.
+        /// </summary>
+        public static void Click(this By selector, IWebDriver driver, int retryCount = 3, int miliseconds = 500)
         {
-            id.ValidateNotNullOrWhitespace(nameof(id));
-
-            return By.Id(id);
+            var policy = CreateClickRetryPolicy(retryCount, miliseconds);
+            selector.Click(driver, policy);
         }
 
-        public static By ToXPathBy(this string xpath)
+        /// <summary>
+        /// Waits to become available, scrolls into view, then retries to wait to become available and click.
+        /// </summary>
+        public static void Click(this By selector, IWebDriver driver, Policy retryPolicy)
         {
-            xpath.ValidateNotNullOrWhitespace(nameof(xpath));
-
-            return By.XPath(xpath);
+            selector
+                .WaitToBecomeAvailable(driver)
+                .FindElement(driver)
+                .ScrollIntoView(driver);
+            retryPolicy.Execute(
+                () => selector
+                    .WaitToBecomeClickable(driver)
+                    .FindElement(driver)
+                    .Click());
         }
 
-        public static By ToClassNameBy(this string className)
-        {
-            className.ValidateNotNullOrWhitespace(nameof(className));
-
-            return By.ClassName(className);
-        }
+        private static Policy CreateClickRetryPolicy(int retryCount, int miliseconds) => Policy
+            .Handle<ElementClickInterceptedException>()
+            .WaitAndRetry(Enumerable.Range(0, retryCount).Select(i => TimeSpan.FromMilliseconds(miliseconds)));
     }
 }
