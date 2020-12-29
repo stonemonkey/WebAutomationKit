@@ -24,5 +24,12 @@ namespace WebAutomationKit.Selenium
 
             return By.ClassName(className);
         }
+
+        public static By ToCssSelectorBy(this string cssSelector)
+        {
+            cssSelector.ValidateNotNullOrWhitespace(nameof(cssSelector));
+
+            return By.CssSelector(cssSelector);
+        }
     }
 }
